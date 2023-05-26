@@ -1,6 +1,9 @@
 ---
 - name: Initialize Kubernetes Cluster
-  hosts: k8s-master-lb:6443
+  hosts: k8s-master-lb
+  vars:
+    ansible_ip: 10.6.3.101
+    ansible_port: 6443
   remote_user: root
   tasks:
     - name: 

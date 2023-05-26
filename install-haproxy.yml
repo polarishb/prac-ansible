@@ -9,7 +9,7 @@
 
     - name: Configure haproxy
       blockinfile:
-        patch: /etc/haproxy/haproxy.cfg
+        path: /etc/haproxy/haproxy.cfg
         block: |
           frontend kubernetes-master-lb
           bind 0.0.0.0:6443

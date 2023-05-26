@@ -4,7 +4,7 @@
   tasks:
     - name: Configure /etc/ansible/hosts (1/4)
       blockinfile:
-        patch: /etc/ansible/hosts
+        path: /etc/ansible/hosts
         block: |
           [k8s-all]
           10.6.3.101 k8s-master-lb
@@ -20,7 +20,7 @@
 
     - name: Configure /etc/ansible/hosts (2/4)
       blockinfile:
-        patch: /etc/ansible/hosts
+        path: /etc/ansible/hosts
         block: |
           [k8s-masters]
           10.6.3.110 k8s-master01
@@ -29,7 +29,7 @@
 
     - name: Configure /etc/ansible/hosts (3/4)
       blockinfile:
-        patch: /etc/ansible/hosts
+        path: /etc/ansible/hosts
         block: |
           [k8s-master-lb]
           10.6.3.110 k8s-master01
@@ -38,7 +38,7 @@
 
     - name: Configure /etc/ansible/hosts (4/4)
       blockinfile:
-        patch: /etc/ansible/hosts
+        path: /etc/ansible/hosts
         block: |
           [k8s-nodes]
           10.6.3.111 k8s-node1-1
@@ -50,7 +50,7 @@
 
     - name: Configure hosts file
       blockinfile:
-        patch: /etc/hosts
+        path: /etc/hosts
         block: |
           10.6.3.101 k8s-master-lb
           10.6.3.110 k8s-master01

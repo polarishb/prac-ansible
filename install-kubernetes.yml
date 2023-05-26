@@ -5,7 +5,7 @@
   tasks:
     - name: add kubernetes repository
       blockinfile:
-        patch: /etc/yum.repos.d/kubernetes.repo
+        path: /etc/yum.repos.d/kubernetes.repo
         block: |
           [kubernetes]
           name=Kubernetes
