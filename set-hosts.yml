@@ -2,7 +2,7 @@
 - name: Initialize system for install kubernetes
   hosts: k8s-all
   remote_user: root
-  tasks:
+  tasks:  
     - name: set hosts file
       blockinfile:
         path: /etc/hosts

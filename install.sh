@@ -7,6 +7,10 @@ ansible-playbook set-hosts.yml
 ansible-playbook install-kubernetes.yml
 ansible-playbook install-haproxy.yml
 
+# Kubernetes Cluster 생성
+ansible-playbook init-master.yml
+scp root@k8s-master01:~/initial_ /sources/
+
 ## Kubectl 설정
 if [ ! -d "/source" ]; then
     mkdir /sources
