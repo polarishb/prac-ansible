@@ -1,0 +1,64 @@
+---
+- name: Add Ansible hosts
+  hosts: localhost
+  tasks:
+    - name: Configure /etc/ansible/hosts (1/4)
+      blockinfile:
+        patch: /etc/ansible/hosts
+        block: |
+          [k8s-all]
+          10.6.3.101 k8s-master-lb
+          10.6.3.110 k8s-master01
+          10.6.3.120 k8s-master02
+          10.6.3.130 k8s-master02
+          10.6.3.111 k8s-node1-1
+          10.6.3.112 k8s-node1-2
+          10.6.3.121 k8s-node2-1
+          10.6.3.122 k8s-node2-2
+          10.6.3.131 k8s-node3-1
+          10.6.3.132 k8s-node3-2
+
+    - name: Configure /etc/ansible/hosts (2/4)
+      blockinfile:
+        patch: /etc/ansible/hosts
+        block: |
+          [k8s-masters]
+          10.6.3.110 k8s-master01
+          10.6.3.120 k8s-master02
+          10.6.3.130 k8s-master02  
+
+    - name: Configure /etc/ansible/hosts (3/4)
+      blockinfile:
+        patch: /etc/ansible/hosts
+        block: |
+          [k8s-master-lb]
+          10.6.3.110 k8s-master01
+          10.6.3.120 k8s-master02
+          10.6.3.130 k8s-master02  
+
+    - name: Configure /etc/ansible/hosts (4/4)
+      blockinfile:
+        patch: /etc/ansible/hosts
+        block: |
+          [k8s-nodes]
+          10.6.3.111 k8s-node1-1
+          10.6.3.112 k8s-node1-2
+          10.6.3.121 k8s-node2-1
+          10.6.3.122 k8s-node2-2
+          10.6.3.131 k8s-node3-1
+          10.6.3.132 k8s-node3-2
+
+    - name: Configure hosts file
+      blockinfile:
+        patch: /etc/hosts
+        block: |
+          10.6.3.101 k8s-master-lb
+          10.6.3.110 k8s-master01
+          10.6.3.120 k8s-master02
+          10.6.3.130 k8s-master02
+          10.6.3.111 k8s-node1-1
+          10.6.3.112 k8s-node1-2
+          10.6.3.121 k8s-node2-1
+          10.6.3.122 k8s-node2-2
+          10.6.3.131 k8s-node3-1
+          10.6.3.132 k8s-node3-2          

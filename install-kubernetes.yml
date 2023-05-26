@@ -1,0 +1,87 @@
+---
+- name: Install Kubernetes
+  hosts: k8s-all
+  remote_user: root
+  tasks:
+    - name: add kubernetes repository
+      blockinfile:
+        patch: /etc/yum.repos.d/kubernetes.repo
+        block: |
+          [kubernetes]
+          name=Kubernetes
+          baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+          exclude=kubelet kubeadm kubectl
+        create: true
+
+    - name: Update repository
+      yum:
+        name:
+          - epel-release
+          - yum-utils
+        state: present
+    - name: Install Kubernetes Packages
+      yum:
+        name:
+          - kubeadm
+          - kubectl
+          - kubelet
+        state: present
+        disable_excludes: kubernetes
+
+    - name: Enable Services
+      systemd:
+        name: kubelet
+        state: started
+        enabled: yes
+
+    - name: Add entries to .bashrc
+      lineinfile:
+        path: ~/.bashrc
+        line: "{{ item }}"
+        insertafter: EOF
+      with_items:
+        - 'source <(kubectl completion bash)'
+        - 'alias k=kubectl'
+        - 'complete -o default -F __start_kubectl k'
+
+    - name: Source .bashrc
+      command: source ~/.bashrc
+      failed_when: false
+
+    - name: Create .kube directory
+      command: mkdir -p $HOME/.kube
+
+    - name: Add Container Runtime repository
+      shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      args:
+       create: /etc/yum.repos.d/docker-ce.repo
+
+    - name: Install Container Runtime Packages
+      yum:
+        name: containerd.io
+        state: present
+        disable_excludes: kubernetes
+
+    - name: Create containerd directory
+      command: mkdir -p /etc/containerd
+
+    - name: Configure containerd default setting
+      shell: containerd config default > /etc/containerd/config.toml
+      args:
+       create: /etc/containerd/config.toml
+
+    - name: Replace line in file
+      ansible.builtin.replace:
+        path: /path/to/file
+        regexp: '^(\s*default_runtime.options\])'
+        replace: '\1\n          SystemdCgroup = true'
+
+    - name: Enable Services
+      systemd:
+        name: containerd
+        state: started
+        enabled: yes
+    

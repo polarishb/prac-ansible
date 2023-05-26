@@ -1,0 +1,7 @@
+---
+- name: Initialize Kubernetes Cluster
+  hosts: k8s-master-lb:6443
+  remote_user: root
+  tasks:
+    - name: 
+      shell: kubeadm init --control-plane-endpoint=k8s-master-lb:6443 --upload-certs --pod-network-cidr=192.168.0.0/16 | tee ~/initial_log

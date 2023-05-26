@@ -1,0 +1,11 @@
+---
+- name: Conifgure Kubernetes Cluster
+  hosts: k8s-all
+  tasks:
+    - name: Copy kubernetes admin.conf file
+      copy:
+        src: /sources/admin.conf
+        dest: $HOME/.kube/config
+        owner: root
+        group: root
+        mode: '0600'
