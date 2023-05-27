@@ -36,12 +36,4 @@ fi
 
 # Kubernetes Cluster 생성 및 연결
 ansible-playbook init-master.yml
-
-if [ ! -f "/sources/admin.conf "]; then
-    scp root@k8s-master01:/etc/kubernetes/admin.conf /sources/
-    echo "Copied kubernetes cluster configure file"
-else
-    echo "configure file already exists"
-fi
 ansible-playbook config-cluster.yml
-

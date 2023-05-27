@@ -11,3 +11,9 @@
         src: ~/initial_log
         dest: /sources/initial_log
         flat: yes
+
+    - name: Copy admin.conf to Ansible server
+      fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: /sources/admin.conf
+        flat: yes
