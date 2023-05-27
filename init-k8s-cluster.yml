@@ -60,6 +60,11 @@
           net.bridge.bridge-nf-call-ip6tables = 1
         create: true
 
+    - name: Create hosts.allow
+      file:
+        path: /etc/hosts.allow
+        state: touch
+
     - name: Add ssh_connection trust
       blockinfile:
         path: /etc/hosts.allow
@@ -75,6 +80,11 @@
           sshd: 10.6.3.130
           sshd: 10.6.3.131
           sshd: 10.6.3.132
+
+    - name: Create hosts.deny
+      file:
+        path: /etc/hosts.deny
+        state: touch          
 
     - name: Deny Others
       blockinfile:

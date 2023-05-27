@@ -7,7 +7,6 @@
         path: /etc/ansible/hosts
         block: |
           [k8s-all]
-          10.6.3.101 k8s-master-lb
           10.6.3.110 k8s-master01
           10.6.3.120 k8s-master02
           10.6.3.130 k8s-master03
@@ -22,14 +21,14 @@
       blockinfile:
         path: /etc/ansible/hosts
         block: |
-          [k8s-masters]
+          [k8s-main]
           10.6.3.110 k8s-master01
 
     - name: Configure /etc/ansible/hosts (3/5)
       blockinfile:
         path: /etc/ansible/hosts
         block: |
-          [k8s-main]
+          [k8s-masters]
           10.6.3.110 k8s-master01
           10.6.3.120 k8s-master02
           10.6.3.130 k8s-master03             
@@ -39,9 +38,7 @@
         path: /etc/ansible/hosts
         block: |
           [k8s-master-lb]
-          10.6.3.110 k8s-master01
-          10.6.3.120 k8s-master02
-          10.6.3.130 k8s-master03  
+          10.6.3.101 k8s-master-lb
 
     - name: Configure /etc/ansible/hosts (5/5)
       blockinfile:

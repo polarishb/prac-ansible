@@ -5,12 +5,12 @@
   tasks:
     - name: create key
       connection: local
-      command: "ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ''"
-      ignore_errors: yes
-      run_once: true
+      community.crypto.openssh_keypair:
+        path: ~/.ssh/id_rsa
+        size: 4096
 
     - name: input key
-      authorized_key:
+      ansible.posix.authorized_key:
         user: root
         state: present
         key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

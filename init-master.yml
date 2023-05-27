@@ -7,6 +7,7 @@
       shell: kubeadm init --control-plane-endpoint=k8s-master-lb:6443 --upload-certs --pod-network-cidr=192.168.0.0/16 | tee ~/initial_log
 
     - name: Copy logs to Ansible server
-      copy:
+      fetch:
         src: ~/initial_log
-        dest: root@10.6.3.100:~/initial_log
+        dest: /sources/initial_log
+        flat: yes

@@ -3,16 +3,16 @@
   hosts: k8s-all
   remote_user: root
   tasks:
-    - name: add kubernetes repository
+    - name: Add kubernetes repository
       blockinfile:
         path: /etc/yum.repos.d/kubernetes.repo
         block: |
           [kubernetes]
           name=Kubernetes
-          baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+          baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch
           enabled=1
           gpgcheck=1
-          gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+          gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
           exclude=kubelet kubeadm kubectl
         create: true
 
@@ -51,37 +51,52 @@
       command: source ~/.bashrc
       failed_when: false
 
-    - name: Create .kube directory
-      command: mkdir -p $HOME/.kube
+
+    - name: Create .kube directory 
+      file:
+        path: ~/.kube
+        state: directory
+        mode: '0644'
 
     - name: Add Container Runtime repository
-      shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
       args:
-       create: /etc/yum.repos.d/docker-ce.repo
+       creates: /etc/yum.repos.d/docker-ce.repo
 
     - name: Install Container Runtime Packages
       yum:
         name: containerd.io
         state: present
         disable_excludes: kubernetes
+        allowerasing: true
 
     - name: Create containerd directory
-      command: mkdir -p /etc/containerd
+      file:
+        path: /etc/containerd
+        state: directory
+        mode: '0644'      
 
     - name: Configure containerd default setting
-      shell: containerd config default > /etc/containerd/config.toml
-      args:
-       create: /etc/containerd/config.toml
+      command: containerd config default > /etc/containerd/config.toml
 
-    - name: Replace line in file
-      ansible.builtin.replace:
-        path: /path/to/file
-        regexp: '^(\s*default_runtime.options\])'
-        replace: '\1\n          SystemdCgroup = true'
+    - name: Read File Contents
+      slurp:
+        path: /etc/containerd/config.toml
+      register: file_content
 
+    - name: Find Specific String
+      set_fact:
+        specific_line: "{{ file_content.content | b64decode | regex_search('default_runtime.options].*$', multiline=True) }}"
+
+    - name: Set Cgroup to Systemd
+      replace:
+        path: /etc/containerd/config.toml
+        regexp: "{{ specific_line }}"
+        replace: "{{ specific_line }}\n          SystemdCgroup = true"
+      when: specific_line is defined
+      
     - name: Enable Services
       systemd:
         name: containerd
         state: started
         enabled: yes
-    

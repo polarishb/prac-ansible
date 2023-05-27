@@ -24,3 +24,9 @@
           server k8s-master01 10.6.3.110:6443 check
           server k8s-master02 10.6.3.120:6443 check
           server k8s-master03 10.6.3.130:6443 check
+
+    - name: Enable Service
+      systemd:
+        name: haproxy
+        state: started
+        enabled: yes
