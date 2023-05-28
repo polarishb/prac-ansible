@@ -1,6 +1,6 @@
 ---
 - name: Install Kubernetes
-  hosts: k8s-all
+  hosts: k8s_all
   remote_user: root
   tasks:
     - name: Add kubernetes repository
@@ -51,7 +51,6 @@
       command: source ~/.bashrc
       failed_when: false
 
-
     - name: Create .kube directory 
       file:
         path: ~/.kube
@@ -77,23 +76,30 @@
         mode: '0644'      
 
     - name: Configure containerd default setting
-      command: containerd config default > /etc/containerd/config.toml
+      shell: containerd config default | tee /etc/containerd/config.toml
 
-    - name: Read File Contents
-      slurp:
-        path: /etc/containerd/config.toml
-      register: file_content
+    # - name: Read File Contents
+    #   slurp:
+    #     path: /etc/containerd/config.toml
+    #   register: file_content
 
-    - name: Find Specific String
-      set_fact:
-        specific_line: "{{ file_content.content | b64decode | regex_search('default_runtime.options].*$', multiline=True) }}"
+    # - name: Find Specific String
+    #   set_fact:
+    #     specific_line: "{{ file_content.content | b64decode | regex_search('runtimes.runc.options].*$', multiline=True) }}"
 
-    - name: Set Cgroup to Systemd
+    # - name: Set Cgroup to Systemd
+    #   replace:
+    #     path: /etc/containerd/config.toml
+    #     regexp: "{{ specific_line }}"
+    #     replace: "{{ specific_line }}\n          SystemdCgroup = true"
+    #   when: specific_line is defined
+  
+    - name:  Set Cgroup to Systemd
       replace:
         path: /etc/containerd/config.toml
-        regexp: "{{ specific_line }}"
-        replace: "{{ specific_line }}\n          SystemdCgroup = true"
-      when: specific_line is defined
+        regexp: '(runtimes\.runc\.options\])'
+        replcae: '\1\n          SystemdCgroup = true'
+
       
     - name: Enable Services
       systemd:

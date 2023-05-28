@@ -1,0 +1,12 @@
+---
+- name: Initialize Worker Nodes
+  hosts: k8s_nodes
+  remote_user: root
+  tasks:
+    - name: Join Kubernetes Cluster as Worker
+      shell: kubeadm join 
+
+    - name: Copy admin.conf to /.kube
+      copy:
+        src: /sources/admin.conf
+        dest: $HOME/.kube/

@@ -2,55 +2,33 @@
 - name: Add Ansible hosts
   hosts: localhost
   tasks:
-    - name: Configure /etc/ansible/hosts (1/5)
+    - name: Configure /etc/ansible/hosts
       blockinfile:
         path: /etc/ansible/hosts
         block: |
-          [k8s-all]
-          10.6.3.110 k8s-master01
-          10.6.3.120 k8s-master02
-          10.6.3.130 k8s-master03
-          10.6.3.111 k8s-node1-1
-          10.6.3.112 k8s-node1-2
-          10.6.3.121 k8s-node2-1
-          10.6.3.122 k8s-node2-2
-          10.6.3.131 k8s-node3-1
-          10.6.3.132 k8s-node3-2
+          [k8s_all:children]
+          k8s_masters
+          k8s_nodes
+          k8s_master_lb
 
-    - name: Configure /etc/ansible/hosts (2/4)
-      blockinfile:
-        path: /etc/ansible/hosts
-        block: |
-          [k8s-main]
-          10.6.3.110 k8s-master01
+          [k8s_main]
+          k8s-master01
 
-    - name: Configure /etc/ansible/hosts (3/5)
-      blockinfile:
-        path: /etc/ansible/hosts
-        block: |
-          [k8s-masters]
-          10.6.3.110 k8s-master01
-          10.6.3.120 k8s-master02
-          10.6.3.130 k8s-master03             
+          [k8s_masters]
+          k8s-master01
+          k8s-master02
+          k8s-master03
 
-    - name: Configure /etc/ansible/hosts (3/5)
-      blockinfile:
-        path: /etc/ansible/hosts
-        block: |
-          [k8s-master-lb]
-          10.6.3.101 k8s-master-lb
+          [k8s_nodes]
+          k8s-node1-1
+          k8s-node1-2
+          k8s-node2-1
+          k8s-node2-2
+          k8s-node3-1
+          k8s-node3-2
 
-    - name: Configure /etc/ansible/hosts (5/5)
-      blockinfile:
-        path: /etc/ansible/hosts
-        block: |
-          [k8s-nodes]
-          10.6.3.111 k8s-node1-1
-          10.6.3.112 k8s-node1-2
-          10.6.3.121 k8s-node2-1
-          10.6.3.122 k8s-node2-2
-          10.6.3.131 k8s-node3-1
-          10.6.3.132 k8s-node3-2
+          [k8s_master_lb]
+          k8s-master-lb
 
     - name: Configure hosts file
       blockinfile:
@@ -65,4 +43,4 @@
           10.6.3.121 k8s-node2-1
           10.6.3.122 k8s-node2-2
           10.6.3.131 k8s-node3-1
-          10.6.3.132 k8s-node3-2          
+          10.6.3.132 k8s-node3-2

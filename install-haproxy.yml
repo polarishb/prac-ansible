@@ -1,6 +1,6 @@
 ---
 - name: Install Haproxy LoadBalancer
-  hosts: k8s-master-lb
+  hosts: k8s_master_lb
   tasks:
     - name: Install Packages
       yum:

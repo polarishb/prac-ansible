@@ -1,6 +1,6 @@
 ---
 - name: Initialize system for install kubernetes
-  hosts: k8s-all
+  hosts: k8s_all
   remote_user: root
   tasks:  
     - name: set hosts file
@@ -23,7 +23,7 @@
     - name: Disable Swap (2/2)
       replace: 
         path: /etc/fstab
-        regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+        regexp: '^([^#].*?\s[ns].*swap\s+.*)$'
         replace: '# \1'
     - name: Set Kernel Mode
       blockinfile:

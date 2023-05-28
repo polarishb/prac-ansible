@@ -1,6 +1,6 @@
 ---
 - name: ssh-keygen
-  hosts: k8s-all
+  hosts: k8s_all
   gather_facts: no
   tasks:
     - name: create key
