@@ -1,6 +1,6 @@
 ---
 - name: Set CNI for Kubernetes Cluster
-  hosts: k8s_all
+  hosts: k8s_main
   gather_facts: no
   remote_user: root
   tasks:
@@ -9,7 +9,7 @@
         src: /sources/calico.yaml
         dest: $HOME/
 
-    - name: initialize Namespace
+    - name: initialize Calico
       shell: kubectl delete -f $HOME/calico.yaml
       ignore_errors: true
     

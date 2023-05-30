@@ -20,12 +20,4 @@
       fetch:
         src: /etc/kubernetes/admin.conf
         dest: /sources/admin.conf
-        flat: yes
-
-    - name: Copy admin.conf to /.kube
-      copy:
-        src: /sources/admin.conf
-        dest: $HOME/.kube/
-        owner: root
-        group: root
-        mode: '0600'        
+        flat: yes  

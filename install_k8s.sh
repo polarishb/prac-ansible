@@ -9,9 +9,12 @@ ansible-playbook /sources/init-k8s-cluster.yml
 ansible-playbook /sources/install-kubernetes.yml
 ansible-playbook /sources/install-haproxy.yml
 
-# Kubernetes Cluster 생성 및 연결
+# Kubernetes Cluster 생성
 ansible-playbook /sources/init-cluster.yml
-ansible-playbook /sources/config-cluster.yml
+
+# CNI 설치
+curl https://docs.projectcalico.org/archive/v3.17/manifests/calico.yaml -O /sources/ --insecure
+ansible-playbook /sources/set-cni.yml
 
 # Join Token 추출
 sed -n '/^\s.*kubeadm/,/control-plane/p' /sources/initial_log > /sources/Master
@@ -23,9 +26,8 @@ sed -i 's/\\//g' /sources/Worker
 ansible-playbook /sources/init-master.yml
 ansible-playbook /sources/init-worker.yml
 
-# CNI 설치
-curl https://docs.projectcalico.org/archive/v3.17/manifests/calico.yaml -O /sources/ --insecure
-ansible-playbook /sources/set-cni.yml
+# kubectl admin.conf 설정
+ansible-playbook /sources/config-cluster.yml
 
 # 스토리지 서버 마운트
 ansible-playbook /sources/mount-nfs.yml
