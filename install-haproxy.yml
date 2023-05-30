@@ -1,6 +1,8 @@
 ---
 - name: Install Haproxy LoadBalancer
   hosts: k8s_master_lb
+  gather_facts: no
+  remote_user: root
   tasks:
     - name: Install Packages
       yum:
@@ -21,9 +23,9 @@
           balance roundrobin
           option tcp-check
           option tcplog
-          server k8s-master01 10.6.3.110:6443 check
-          server k8s-master02 10.6.3.120:6443 check
-          server k8s-master03 10.6.3.130:6443 check
+          server k8s-master1 10.6.3.110:6443 check
+          server k8s-master2 10.6.3.120:6443 check
+          server k8s-master3 10.6.3.130:6443 check
 
     - name: Enable Service
       systemd:

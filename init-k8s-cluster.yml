@@ -1,22 +1,9 @@
 ---
 - name: Initialize system for install kubernetes
   hosts: k8s_all
+  gather_facts: no
   remote_user: root
   tasks:  
-    - name: set hosts file
-      blockinfile:
-        path: /etc/hosts
-        block: |
-          10.6.3.101 k8s-master-lb
-          10.6.3.110 k8s-master01
-          10.6.3.120 k8s-master02
-          10.6.3.130 k8s-master02
-          10.6.3.111 k8s-node1-1
-          10.6.3.112 k8s-node1-2
-          10.6.3.121 k8s-node2-1
-          10.6.3.122 k8s-node2-2
-          10.6.3.131 k8s-node3-1
-          10.6.3.132 k8s-node3-2
     - name: Disable Swap (1/2)
       shell: |
         swapoff -a
@@ -59,35 +46,3 @@
           net.bridge.bridge-nf-call-iptables  = 1
           net.bridge.bridge-nf-call-ip6tables = 1
         create: true
-
-    - name: Create hosts.allow
-      file:
-        path: /etc/hosts.allow
-        state: touch
-
-    - name: Add ssh_connection trust
-      blockinfile:
-        path: /etc/hosts.allow
-        block: |
-          sshd: 10.6.3.100
-          sshd: 10.6.3.101
-          sshd: 10.6.3.110
-          sshd: 10.6.3.111
-          sshd: 10.6.3.112
-          sshd: 10.6.3.120
-          sshd: 10.6.3.121
-          sshd: 10.6.3.122
-          sshd: 10.6.3.130
-          sshd: 10.6.3.131
-          sshd: 10.6.3.132
-
-    - name: Create hosts.deny
-      file:
-        path: /etc/hosts.deny
-        state: touch          
-
-    - name: Deny Others
-      blockinfile:
-        path: /etc/hosts.deny
-        block: |
-          sshd: ALL      

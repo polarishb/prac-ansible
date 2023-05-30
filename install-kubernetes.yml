@@ -1,6 +1,7 @@
 ---
 - name: Install Kubernetes
   hosts: k8s_all
+  gather_facts: no
   remote_user: root
   tasks:
     - name: Add kubernetes repository
@@ -19,7 +20,6 @@
     - name: Update repository
       yum:
         name:
-          - epel-release
           - yum-utils
         state: present
     - name: Install Kubernetes Packages
@@ -67,7 +67,7 @@
         name: containerd.io
         state: present
         disable_excludes: kubernetes
-        allowerasing: true
+        # allowerasing: autoremove
 
     - name: Create containerd directory
       file:
@@ -97,8 +97,8 @@
     - name:  Set Cgroup to Systemd
       replace:
         path: /etc/containerd/config.toml
-        regexp: '(runtimes\.runc\.options\])'
-        replcae: '\1\n          SystemdCgroup = true'
+        regexp: 'SystemdCgroup = [Ff]alse'
+        replace: 'SystemdCgroup = true'
 
       
     - name: Enable Services

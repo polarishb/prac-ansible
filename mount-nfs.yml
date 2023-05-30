@@ -1,22 +1,9 @@
 ---
-- name: Initialize Master Nodes
+- name: Mount Storage for Master Node
   hosts: k8s_masters
-  gather_facts: no
   remote_user: root
+  gather_facts: no
   tasks:
-    - name: Copy Join Command
-      copy:
-        src: /sources/Master
-        dest: $HOME/
-  
-    - name: Join Kubernetes Cluster as Master
-      shell: $(cat $HOME/Master)
-
-    - name: Remove Join files
-      file:
-        path: $HOME/Master
-        state: absent
-
     - name: Create share directory 
       file:
         path: /nfs_share

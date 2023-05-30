@@ -1,6 +1,7 @@
 ---
 - name: Initialize Kubernetes Cluster
   hosts: k8s_main
+  gather_facts: no
   remote_user: root
   tasks:
     - name: Initialize Kubernetes Cluster
@@ -17,3 +18,11 @@
         src: /etc/kubernetes/admin.conf
         dest: /sources/admin.conf
         flat: yes
+
+    - name: Copy admin.conf to /.kube
+      copy:
+        src: /sources/admin.conf
+        dest: $HOME/.kube/
+        owner: root
+        group: root
+        mode: '0600'        

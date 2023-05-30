@@ -1,12 +1,18 @@
 ---
 - name: Initialize Worker Nodes
-  hosts: k8s_nodes
+  hosts: k8s_workers
+  gather_facts: no
   remote_user: root
   tasks:
-    - name: Join Kubernetes Cluster as Worker
-      shell: kubeadm join 
-
-    - name: Copy admin.conf to /.kube
+    - name: Copy Join Command
       copy:
-        src: /sources/admin.conf
-        dest: $HOME/.kube/
+        src: /sources/Worker
+        dest: $HOME/
+  
+    - name: Join Kubernetes Cluster as Worker
+      shell: $(cat $HOME/Worker)
+
+    - name: Remove Join files
+      file:
+        path: $HOME/Worker
+        state: absent

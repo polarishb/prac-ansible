@@ -1,15 +1,17 @@
 ---
 - name: Initialize NFS Server
-  hosts: nfs_server
+  hosts: Storage_Server
+  gather_facts: no
+  remote_user: root
   tasks:
     - name: Install NFS Utils
       yum:
         name: nfs-utils
         state: present
 
-    - name: Create containerd directory
+    - name: Create share directory
       file:
-        path: /root/nfs
+        path: /nfs
         state: directory
         mode: '0777' 
 
@@ -17,7 +19,7 @@
       blockinfile:
         path: /etc/exports
         block: |
-          /root/nfs 192.168.1.*(rw,sync)
+          /root/nfs 10.6.3.*(rw,sync)
           /root/nfs k8s*(rw,sync)
 
     - name: Enable Service

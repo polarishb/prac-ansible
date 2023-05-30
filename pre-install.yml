@@ -1,0 +1,45 @@
+---
+- name: Conifgure Kubernetes Cluster
+  hosts: all
+  remote_user: root
+  gather_facts: no
+  tasks:
+    - name: ssh-keyscan for known_hosts file
+      connection: local
+      shell: /usr/bin/ssh-keyscan -t ecdsa {{ ansible_host }}
+      register: keyscan
+
+    - name: create key
+      connection: local
+      community.crypto.openssh_keypair:
+        path: ~/.ssh/id_rsa
+        size: 4096
+
+    - name: input key
+      ansible.posix.authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"  
+
+    - name: Install required components
+      yum:
+        name: 
+        - epel-release
+        - python3
+        - nfs-utils
+
+    - name: set hosts file
+      blockinfile:
+        path: /etc/hosts
+        block: |
+          10.6.3.101 k8s-master-lb
+          10.6.3.102 Storage-Server
+          10.6.3.110 k8s-master1
+          10.6.3.120 k8s-master2
+          10.6.3.130 k8s-master3
+          10.6.3.111 k8s-worker1-1
+          10.6.3.112 k8s-worker1-2
+          10.6.3.121 k8s-worker2-1
+          10.6.3.122 k8s-worker2-2
+          10.6.3.131 k8s-worker3-1
+          10.6.3.132 k8s-worker3-2
