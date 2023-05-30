@@ -2,7 +2,13 @@
 - name: Conifgure Kubernetes Cluster
   hosts: k8s_all
   remote_user: root
+  gather_facts: no
   tasks:
+    - name: Delete config files
+      file:
+        path: $HOME/.kube/config
+        state: absent
+
     - name: Copy kubernetes admin.conf file
       copy:
         src: /sources/admin.conf

@@ -13,11 +13,21 @@
       blockinfile:
         path: /etc/haproxy/haproxy.cfg
         block: |
+          listen stats
+          bind *:8080-8082
+          mode  http
+          option dontlog-normal
+          stats enable
+          stats realm Haproxy\ Statistics
+          stats uri /haproxy
+          # http-request use-service prometheus-exporter if { path /metrics }
+
           frontend kubernetes-master-lb
           bind 0.0.0.0:6443
           option tcplog
           mode tcp
           default_backend kubernetes-master-nodes
+          
           backend kubernetes-master-nodes
           mode tcp
           balance roundrobin
@@ -26,6 +36,21 @@
           server k8s-master1 10.6.3.110:6443 check
           server k8s-master2 10.6.3.120:6443 check
           server k8s-master3 10.6.3.130:6443 check
+
+          frontend prometheus-master-lb
+          bind 0.0.0.0:9090
+          option tcplog
+          mode tcp
+          use_backend prometheus-master-nodes
+
+          backend prometheus-master-nodes
+          mode tcp
+          balance roundrobin
+          option tcp-check
+          option tcplog
+          server k8s-master1 10.6.3.110:9090 check
+          server k8s-master2 10.6.3.120:9090 check
+          server k8s-master3 10.6.3.130:9090 check
 
     - name: Enable Service
       systemd:
