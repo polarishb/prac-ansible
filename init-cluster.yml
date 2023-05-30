@@ -4,6 +4,9 @@
   gather_facts: no
   remote_user: root
   tasks:
+    - name: Reset Kubernetes Cluster
+      shell: kubeadm reset -f
+
     - name: Initialize Kubernetes Cluster
       shell: kubeadm init --control-plane-endpoint=k8s-master-lb:6443 --upload-certs --pod-network-cidr=192.168.0.0/16 | tee ~/initial_log
 

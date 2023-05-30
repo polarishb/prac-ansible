@@ -1,8 +1,8 @@
 ---
 - name: Mount Storage for Master Node
-  hosts: k8s_masters
-  remote_user: root
+  hosts: k8s_all
   gather_facts: no
+  remote_user: root
   tasks:
     - name: Create share directory 
       file:

@@ -1,8 +1,8 @@
 ---
 - name: Conifgure Kubernetes Cluster
   hosts: all
-  remote_user: root
   gather_facts: no
+  remote_user: root
   tasks:
     - name: ssh-keyscan for known_hosts file
       connection: local
