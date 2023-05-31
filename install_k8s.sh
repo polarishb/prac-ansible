@@ -8,6 +8,7 @@ ansible-playbook /sources/init-k8s-cluster.yml
 # 쿠버네티스 클러스터 환경 구축
 ansible-playbook /sources/install-kubernetes.yml
 ansible-playbook /sources/install-haproxy.yml
+ansible-playbook /sources/install-keepalived.yml
 
 # Kubernetes Cluster 생성
 ansible-playbook /sources/init-cluster.yml

@@ -1,6 +1,6 @@
 ---
 - name: Install Haproxy LoadBalancer
-  hosts: k8s_master_lb
+  hosts: k8s_lbs
   gather_facts: no
   remote_user: root
   tasks:
@@ -13,17 +13,17 @@
       blockinfile:
         path: /etc/haproxy/haproxy.cfg
         block: |
-          listen stats
-          bind *:8080-8082
-          mode  http
-          option dontlog-normal
-          stats enable
-          stats realm Haproxy\ Statistics
-          stats uri /haproxy
+          # listen stats
+          # bind *:8080-8082
+          # mode  http
+          # option dontlog-normal
+          # stats enable
+          # stats realm Haproxy\ Statistics
+          # stats uri /haproxy
           # http-request use-service prometheus-exporter if { path /metrics }
 
           frontend kubernetes-master-lb
-          bind 0.0.0.0:6443
+          bind 10.6.3.200:6443
           option tcplog
           mode tcp
           default_backend kubernetes-master-nodes
@@ -51,6 +51,21 @@
           server k8s-master1 10.6.3.110:9090 check
           server k8s-master2 10.6.3.120:9090 check
           server k8s-master3 10.6.3.130:9090 check
+
+          frontend grafana-master-lb
+          bind 0.0.0.0:9100
+          option tcplog
+          mode tcp
+          use_backend grafana-master-nodes
+
+          backend grafana-master-nodes
+          mode tcp
+          balance roundrobin
+          option tcp-check
+          option tcplog
+          server k8s-master1 10.6.3.110:9100 check
+          server k8s-master2 10.6.3.120:9100 check
+          server k8s-master3 10.6.3.130:9100 check
 
     - name: Enable Service
       systemd:

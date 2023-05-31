@@ -8,10 +8,6 @@
       copy:
         src: /sources/calico.yaml
         dest: $HOME/
-
-    - name: initialize Calico
-      shell: kubectl delete -f $HOME/calico.yaml
-      ignore_errors: true
     
     - name: Install Calico
       shell: kubectl create -f $HOME/calico.yaml

@@ -35,5 +35,8 @@ else
 fi
 
 # Ansible Host 설정
+ansible-playbook /sources/keyscan.yml
+ansible-playbook /sources/ansible-ssh-keygen.yml
+
 ansible-playbook /sources/configure-ansible.yml
-ansible-playbook /sources/pre-install.yml -k
+ansible-playbook /sources/pre-install.yml

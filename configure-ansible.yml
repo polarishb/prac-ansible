@@ -26,8 +26,9 @@
           k8s-worker3-1
           k8s-worker3-2
 
-          [k8s_master_lb]
-          k8s-master-lb
+          [k8s_lbs]
+          k8s-lb1
+          k8s-lb2
 
           [Storage_Server]
           Storage-Server
@@ -36,7 +37,6 @@
       blockinfile:
         path: /etc/hosts
         block: |
-          10.6.3.101 k8s-master-lb
           10.6.3.102 Storage-Server
           10.6.3.110 k8s-master1
           10.6.3.120 k8s-master2
@@ -47,3 +47,6 @@
           10.6.3.122 k8s-worker2-2
           10.6.3.131 k8s-worker3-1
           10.6.3.132 k8s-worker3-2
+          10.6.3.200 k8s-master-lb
+          10.6.3.201 k8s-lb1
+          10.6.3.202 k8s-lb2
