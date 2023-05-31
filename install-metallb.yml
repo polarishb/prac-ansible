@@ -1,0 +1,30 @@
+---
+- name: Install MetalLB
+  hosts: k8s_master_main
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Copy install MetalLB script to host
+      copy:
+        src: /sources/install_metallb.sh
+        dest: $HOME/
+        mode: '0700'
+
+    - name: Copy YAML file to host
+      copy:
+        src: /sources/IPPool.yml
+        dest: $HOME/
+        mode: '0644'
+    
+    - name: install MetalLB
+      command: $HOME/install_metallb.sh
+    
+    - name: Delete files
+      file:
+        path: $HOME/install_metallb.sh
+        state: absent
+
+    - name: Delete files
+      file:
+        path: $HOME/IPPool.yml
+        state: absent

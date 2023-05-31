@@ -1,6 +1,6 @@
 ---
 - name: Initialize Kubernetes Cluster
-  hosts: k8s_main
+  hosts: k8s_master_main
   gather_facts: no
   remote_user: root
   tasks:

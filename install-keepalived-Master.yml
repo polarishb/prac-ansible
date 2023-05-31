@@ -1,6 +1,6 @@
 ---
 - name: Install Haproxy LoadBalancer
-  hosts: k8s_lbs
+  hosts: k8s_lb_master
   gather_facts: no
   remote_user: root
   tasks:
@@ -10,21 +10,26 @@
         state: present
 
     - name: Stat Configure file
-      stat: path=/etc/keepalived/keepalived.cfg.bak
+      stat: path=/etc/keepalived/keepalived.conf.bak
       register: bak_stat
 
     - name: Backup Configure file
-      command: mv /etc/keepalived/keepalived.cfg /etc/keepalived/keepalived.cfg.bak
+      command: mv /etc/keepalived/keepalived.conf /etc/keepalived/keepalived.conf.bak
       when: not bak_stat.stat.exists
+
+    - name: Initialize Configure file
+      file:
+        path: /etc/keepalived/keepalived.conf
+        state: absent
 
     - name: Create Configure file
       file:
-        path: /etc/keepalived/keepalived.cfg
+        path: /etc/keepalived/keepalived.conf
         state: touch
 
     - name: Configure VIP
       blockinfile:
-        path: /etc/keepalived/keepalived.cfg
+        path: /etc/keepalived/keepalived.conf
         block: |
           global_defs {
               router_id K8S_LB1

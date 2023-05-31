@@ -7,14 +7,17 @@
         path: /etc/ansible/hosts
         block: |
           [k8s_all:children]
-          k8s_main
           k8s_masters
           k8s_workers
 
-          [k8s_main]
+          [k8s_masters:children]
+          k8s_master_main
+          k8s_master_join
+
+          [k8s_master_main]
           k8s-master1
 
-          [k8s_masters]
+          [k8s_master_join]
           k8s-master2
           k8s-master3
 
@@ -26,8 +29,14 @@
           k8s-worker3-1
           k8s-worker3-2
 
-          [k8s_lbs]
+          [k8s_lbs:children]
+          k8s_lb_master
+          k8s_lb_backup
+
+          [k8s_lb_master]
           k8s-lb1
+
+          [k8s_lb_backup]
           k8s-lb2
 
           [Storage_Server]

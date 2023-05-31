@@ -1,6 +1,6 @@
 ---
 - name: Initialize Master Nodes
-  hosts: k8s_masters
+  hosts: k8s_master_join
   gather_facts: no
   remote_user: root
   tasks:

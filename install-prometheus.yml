@@ -1,0 +1,22 @@
+---
+- name: Install prometheus
+  hosts: k8s_master_main
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Create Directory
+      file:
+        path: $HOME/kube-prometheus-stack
+        state: directory
+
+    - name: Copy install prometheus resources
+      copy:
+        src: /sources/kube-prometheus-stack/
+        dest: $HOME/kube-prometheus-stack/
+
+    - name: make namespace
+      command: kubectl create namespace monitoring
+      ignore_errors: true
+
+    - name: install prometheus
+      command: helm install prometheus $HOME/kube-prometheus-stack/ -n monitoring -f values.yaml

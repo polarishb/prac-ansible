@@ -33,10 +33,13 @@ if [ ! -d $HOME/$loc/ansible/posix ]; then
 else
     echo "Collection Ansible Posix already installed."
 fi
+if [ ! -d $HOME/$loc/kubernetes/core ]; then
+    ansible-galaxy collection install kubernetes.core
+else
+    echo "Collection Kubernetes Core already installed"
+fi
 
 # Ansible Host 설정
-ansible-playbook /sources/keyscan.yml
-ansible-playbook /sources/ansible-ssh-keygen.yml
-
 ansible-playbook /sources/configure-ansible.yml
-ansible-playbook /sources/pre-install.yml
+ansible-playbook /sources/keyscan.yml
+ansible-playbook /sources/pre-install.yml -k

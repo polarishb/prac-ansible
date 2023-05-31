@@ -1,0 +1,19 @@
+---
+- name: Install MetalLB
+  hosts: k8s_master_main
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Copy expose grafana script to host
+      copy:
+        src: /sources/expose_grafana.sh
+        dest: $HOME/
+        mode: '0700'
+
+    - name: expose granafa
+      command: $HOME/expose_grafana.sh    
+
+    - name: Delete files
+      file:
+        path: $HOME/expose_grafana.sh
+        state: absent

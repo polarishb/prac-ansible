@@ -1,13 +1,13 @@
 ---
 - name: Set CNI for Kubernetes Cluster
-  hosts: k8s_main
+  hosts: k8s_master_main
   gather_facts: no
   remote_user: root
   tasks:
     - name: Copy Calico.yml
       copy:
         src: /sources/calico.yaml
-        dest: $HOME/
+        dest: $HOME/calico.yaml
     
     - name: Install Calico
       shell: kubectl create -f $HOME/calico.yaml

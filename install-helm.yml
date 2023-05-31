@@ -1,0 +1,19 @@
+---
+- name: Install Helm
+  hosts: k8s_masters
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Copy install helm script to host
+      copy:
+        src: /sources/get_helm.sh
+        dest: $HOME/
+        mode: '0700'
+
+    - name: install helm
+      command: $HOME/get_helm.sh
+
+    - name: Delete files
+      file:
+        path: $HOME/get_helm.sh
+        state: absent
