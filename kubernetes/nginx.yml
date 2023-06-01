@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-hpa
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - hard
+  nfs:
+    path: /nfs
+    server: 10.6.3.102
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+  namespace: nginx-hpa
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-nginx
+  namespace: nginx-hpa
+  labels:
+    app: nginx-hpa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-hpa
+  template:
+    metadata:
+      labels:
+        app: nginx-hpa
+    spec:
+      containers:
+      - image: nginx
+        name: pod-nginx
+        volumeMounts:
+        - name: my-volume
+          mountPath: /usr/share/nginx/html
+        resources:
+          limits:
+            cpu: "1"
+          requests:
+            cpu: "0.5"          
+      volumes:
+      - name: my-volume
+        persistentVolumeClaim:
+          claimName: nfs-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-lb-nginx
+  namespace: nginx-hpa
+  labels:
+    app: nginx-hpa
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: nginx-hpa
+  type: LoadBalancer
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: deploy-nginx
+  namespace: nginx-hpa
+  labels:
+    app: nginx-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: deploy-nginx
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50

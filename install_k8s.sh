@@ -38,6 +38,9 @@ ansible-playbook $where/playbook/set-cni.yml
 # MetalLB 설치
 ansible-playbook $where/playbook/install-metallb.yml
 
+# Metrics-Server 설치
+ansible-playbook $where/playbook/install-metrics-server.yml
+
 # Helm 설치
 curl -fsSL -o /sources/get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 chmod u+x /sources/get_helm.sh
@@ -46,6 +49,8 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 helm pull prometheus-community/kube-prometheus-stack --untar --untardir /sources/
 ansible-playbook $where/playbook/install-helm.yml
+
+# 모니터링 설치
 ansible-playbook $where/playbook/install-prometheus.yml
 ansible-playbook $where/playbook/expose-grafana.yml
 
