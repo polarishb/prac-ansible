@@ -31,19 +31,32 @@
 
 ![topology](https://github.com/polarishb/prac-ansible/assets/37509306/49bb6cea-dc83-4d54-ad6e-bcccc0bee4cf)
 
+
 ## 설치 방법
 > 앤서블 서버에서 실행해주세요.
 
-리눅스:
+```yaml
+...
+    - name: Add Dockerhub Login
+      blockinfile:
+        path: /etc/containerd/config.toml
+        block: |
+          [plugins."io.containerd.grpc.v1.cri".registry.configs."registry-1.docker.io".auth]
+            username = "DOCKERID"
+            password = "DOCKERPASSWD"
+...
+```
+도커허브에 로그인하기 위해`/playbook/install-kubernetes.yml` 를 수정해 줍니다.   
 
 ```sh
 ./init_ansible.sh
 ```
-init_ansible.sh 을 실행하여 앤서블 hosts설정과 필요한 모듈을 설치합니다.
+`init_ansible.sh` 을 실행하여 앤서블 hosts설정과 필요한 모듈을 설치합니다.   
+
 ```sh
 ./install_k8s.sh
 ```
-앤서블 환경설정을 마치면 install_k8s.sh 을 실행하여 쿠버네티스 클러스터를 구축합니다.
+앤서블 환경설정을 마치면 `install_k8s.sh` 을 실행하여 쿠버네티스 클러스터를 구축합니다.   
 
 ## 정상 동작 확인
 
