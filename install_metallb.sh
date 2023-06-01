@@ -8,7 +8,3 @@ kubectl apply -f - -n kube-system
 # MetalLB 설치
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/manifests/metallb-native.yaml
 kubectl apply -f $HOME/IPPool.yml
-
-kubectl get services prometheus-grafana -n monitoring -o yaml | \
-sed -e "s/type: ClusterIP/type: LoadBalancer/" | \
-kubectl apply -f - -n monitoring

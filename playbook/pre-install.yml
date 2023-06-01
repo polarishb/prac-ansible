@@ -4,11 +4,6 @@
   gather_facts: no
   remote_user: root
   tasks:
-    # - name: ssh-keyscan for known_hosts file
-    #   connection: local
-    #   shell: /usr/bin/ssh-keyscan -t ecdsa {{ ansible_host }}
-    #   register: keyscan
-
     - name: create key
       connection: local
       community.crypto.openssh_keypair:

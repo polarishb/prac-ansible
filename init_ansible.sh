@@ -40,6 +40,8 @@ else
 fi
 
 # Ansible Host 설정
-ansible-playbook /sources/configure-ansible.yml
-ansible-playbook /sources/keyscan.yml
-ansible-playbook /sources/pre-install.yml -k
+where=$(cd "$(dirname "$0")" ; pwd -P)
+
+ansible-playbook $where/playbook/configure-ansible.yml
+ansible-playbook $where/playbook/keyscan.yml
+ansible-playbook $where/playbook/pre-install.yml -k

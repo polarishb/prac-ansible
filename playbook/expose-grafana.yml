@@ -6,7 +6,7 @@
   tasks:
     - name: Copy expose grafana script to host
       copy:
-        src: /sources/expose_grafana.sh
+        src: ../expose_grafana.sh
         dest: $HOME/
         mode: '0700'
 

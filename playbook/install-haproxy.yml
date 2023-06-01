@@ -1,0 +1,35 @@
+---
+- name: Install Haproxy LoadBalancer
+  hosts: k8s_lbs
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Install Packages
+      yum:
+        name: haproxy
+        state: present
+
+    - name: Configure haproxy
+      blockinfile:
+        path: /etc/haproxy/haproxy.cfg
+        block: |
+          frontend kubernetes-master-lb
+          bind 10.6.3.200:6443
+          option tcplog
+          mode tcp
+          default_backend kubernetes-master-nodes
+          
+          backend kubernetes-master-nodes
+          mode tcp
+          balance roundrobin
+          option tcp-check
+          option tcplog
+          server k8s-master1 10.6.3.110:6443 check
+          server k8s-master2 10.6.3.120:6443 check
+          server k8s-master3 10.6.3.130:6443 check
+
+    - name: Enable Service
+      systemd:
+        name: haproxy
+        state: started
+        enabled: yes

@@ -15,6 +15,11 @@
         src: ~/initial_log
         dest: /sources/initial_log
         flat: yes
+    
+    - name: Delete logs
+      file:
+        path: ~/initial_log
+        state: absent
 
     - name: Copy admin.conf to Ansible server
       fetch:

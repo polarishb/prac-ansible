@@ -11,3 +11,8 @@
     
     - name: Install Calico
       shell: kubectl create -f $HOME/calico.yaml
+
+    - name: Delete file
+      file:
+        path: $HOME/calico.yaml
+        state: absent
