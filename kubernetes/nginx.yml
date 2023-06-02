@@ -8,6 +8,9 @@ kind: PersistentVolume
 metadata:
   name: nfs-pv
 spec:
+  claimRef:
+    name: nfs-pvc
+    namespace: nginx-hpa
   capacity:
     storage: 20Gi
   accessModes:
