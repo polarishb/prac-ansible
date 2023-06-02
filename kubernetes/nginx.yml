@@ -60,7 +60,7 @@ spec:
           limits:
             cpu: "1"
           requests:
-            cpu: "0.5"          
+            cpu: "0.1"          
       volumes:
       - name: my-volume
         persistentVolumeClaim:
@@ -84,7 +84,7 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: deploy-nginx
+  name: hpa-nginx
   namespace: nginx-hpa
   labels:
     app: nginx-hpa
