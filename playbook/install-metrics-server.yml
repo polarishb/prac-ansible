@@ -11,9 +11,9 @@
         mode: '0700'
 
     - name: install metrics-server
-      command: $HOME/install_metircs_server.sh
+      command: $HOME/install_metrics_server.sh
 
     - name: Delete files
       file:
-        path: $HOME/install_metircs_server.sh
+        path: $HOME/install_metrics_server.sh
         state: absent

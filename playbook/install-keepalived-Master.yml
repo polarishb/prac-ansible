@@ -1,5 +1,5 @@
 ---
-- name: Install Haproxy LoadBalancer
+- name: Install Keepalived for Master LoadBalancer
   hosts: k8s_lb_master
   gather_facts: no
   remote_user: root

@@ -1,5 +1,5 @@
 ---
-- name: Install Haproxy LoadBalancer
+- name: Install Keepalived for Backup LoadBalancer
   hosts: k8s_lb_backup
   gather_facts: no
   remote_user: root

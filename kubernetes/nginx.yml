@@ -32,6 +32,12 @@ spec:
   resources:
     requests:
       storage: 20Gi
+  selector:
+    matchExpressions:
+      - key: type
+        operator: In
+        values:
+          - nfs      
 ---
 apiVersion: apps/v1
 kind: Deployment
