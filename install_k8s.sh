@@ -28,11 +28,12 @@ ansible-playbook $where/playbook/init-worker.yml
 # kubectl admin.conf 설정
 ansible-playbook $where/playbook/config-cluster.yml
 
-# 스토리지 서버 마운트
+# 스토리지 서버 설정 및 마운트
+ansible-playbook $where/playbook/init-storage.yml
 ansible-playbook $where/playbook/mount-nfs.yml
 
 # CNI 설치
-curl https://docs.projectcalico.org/archive/v3.17/manifests/calico.yaml -O /sources/calico.yaml --insecure
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/manifests/calico.yaml -o /sources/calico.yaml --insecure
 ansible-playbook $where/playbook/set-cni.yml
 
 # MetalLB 설치

@@ -1,0 +1,22 @@
+---
+- name: Initialize Worker Nodes
+  hosts: Storage_Server
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Make nfs directory
+      file:
+        path: /nfs_share
+        state: directory
+  
+    - name: Configure /etc/exports
+      blockinfile:
+        path: /etc/exports
+        block: |
+          /nfs_share 10.6.3.*(rw,sync)
+          /nfs_share k8s*(rw,sync)
+
+    - name: Enable Service
+      systemd:
+        name: nfs
+        state: restarted
