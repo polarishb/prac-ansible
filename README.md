@@ -60,4 +60,24 @@
 
 ## 정상 동작 확인
 
-![dashboard](https://github.com/polarishb/prac-ansible/assets/37509306/f4dec189-7106-4695-99b2-29b9627cc1a9)
+### 쿠버네티스 클러스터 구축 완료
+<img width="556" alt="get_node" src="https://github.com/polarishb/prac-ansible/assets/37509306/149c2622-98b3-4955-bd5f-a8439b91914c">   
+
+### 쿠버네티스에 동작중인 서비스들
+<img width="300" alt="kube_system" src="https://github.com/polarishb/prac-ansible/assets/37509306/04185984-9bb8-4cba-8858-a45aa62894c4"> <img width="300" height="257"  alt="monitoring" src="https://github.com/polarishb/prac-ansible/assets/37509306/4d8cad2b-ab73-44bf-ba19-76e9538ff729">   
+<img width="300" alt="metallb-system" src="https://github.com/polarishb/prac-ansible/assets/37509306/d81f695c-2637-481e-8dd8-ea31b786c373">    
+
+### 그라파나 모니터링 서비스 실행 확인
+![dashboard](https://github.com/polarishb/prac-ansible/assets/37509306/f4dec189-7106-4695-99b2-29b9627cc1a9)    
+
+### 웹 서버 배포
+<img width="378" alt="applyYML" src="https://github.com/polarishb/prac-ansible/assets/37509306/7a1c81c9-f9b0-4587-93f5-6188212e07f3">
+
+### 오토스케일링 동작 확인
+<img width="300" alt="webpage" src="https://github.com/polarishb/prac-ansible/assets/37509306/f74fd16a-14e6-4f93-b1af-395a51ebbcee"> <img width="300" alt="deploy_containerCreate_monitor" src="https://github.com/polarishb/prac-ansible/assets/37509306/64fb9e38-a990-45d7-b84a-5357aff293e7">    
+<img width="300" alt="deploy_autoscaling_monitor" src="https://github.com/polarishb/prac-ansible/assets/37509306/5cc603ca-0e71-40b6-b8fa-ce3c836bff50"> <img width="300" alt="deploy_terminate_monitor" src="https://github.com/polarishb/prac-ansible/assets/37509306/c77078fd-eb88-4ac5-ab6e-88b3f7059c2c">
+
+### 스토리지 서버에 PV/PVC 연결 
+<img width="300" alt="pod_df_Th" src="https://github.com/polarishb/prac-ansible/assets/37509306/480691f6-8cd1-47a9-ac0b-bfaa31be7df3"> <img width="300" height="96" alt="nfs_ls" src="https://github.com/polarishb/prac-ansible/assets/37509306/5c655942-43a7-4678-bcda-f2076c9f6321">   
+<img width="300" alt="get_pv_pvc" src="https://github.com/polarishb/prac-ansible/assets/37509306/d19bfe5f-1464-4dd8-a3dd-6610591d9539">
+
