@@ -1,19 +1,19 @@
 ---
-- name: Install Helm
+- name: Install metrics-server
   hosts: k8s_master_main
   gather_facts: no
   remote_user: root
   tasks:
     - name: Copy install metrics-server script to host
       copy:
-        src: ../install_k8s_metircs_server.sh
+        src: ../install_metrics_server.sh
         dest: $HOME/
         mode: '0700'
 
     - name: install metrics-server
-      command: $HOME/install_k8s_metircs_server.sh
+      command: $HOME/install_metircs_server.sh
 
     - name: Delete files
       file:
-        path: $HOME/install_k8s_metircs_server.sh
+        path: $HOME/install_metircs_server.sh
         state: absent

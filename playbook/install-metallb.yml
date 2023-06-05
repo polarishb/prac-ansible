@@ -18,6 +18,7 @@
     
     - name: install MetalLB
       command: $HOME/install_metallb.sh
+      ignore_errors: true
     
     - name: Delete files
       file:

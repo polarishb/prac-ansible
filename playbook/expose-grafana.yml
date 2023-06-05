@@ -1,5 +1,5 @@
 ---
-- name: Install MetalLB
+- name: Expose Grafana
   hosts: k8s_master_main
   gather_facts: no
   remote_user: root
