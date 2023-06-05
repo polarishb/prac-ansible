@@ -6,15 +6,15 @@
   tasks:
     - name: Make nfs directory
       file:
-        path: /nfs_share
+        path: /nfs
         state: directory
   
     - name: Configure /etc/exports
       blockinfile:
         path: /etc/exports
         block: |
-          /nfs_share 10.6.3.*(rw,sync)
-          /nfs_share k8s*(rw,sync)
+          /nfs 10.6.3.*(rw,sync)
+          /nfs k8s*(rw,sync)
 
     - name: Enable Service
       systemd:
